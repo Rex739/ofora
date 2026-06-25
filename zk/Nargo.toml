@@ -1,0 +1,7 @@
+[package]
+name = "ofora_award_validation"
+type = "bin"
+authors = ["Ofora"]
+compiler_version = ">=0.36.0"
+
+[dependencies]

@@ -1,0 +1,57 @@
+# Example only. Do not commit real salts or private supplier witness data.
+#
+# Generate a local witness file from a private, ignored copy:
+#   cp zk/Prover.toml.example zk/Prover.local.toml
+#   $EDITOR zk/Prover.local.toml
+#
+# The demo scripts intentionally write private witness files under ignored
+# local paths only.
+
+selected_supplier_index = "1"
+tender_ref = "2026041"
+receipt_ref = "2026041001"
+expected_policy_commitment = "0"
+bid_commitments = ["0", "0", "0"]
+selected_bid_commitment = "0"
+
+[policy]
+tender_ref = "2026041"
+price_weight = "35"
+delivery_weight = "25"
+stock_weight = "20"
+quality_weight = "10"
+local_weight = "10"
+minimum_quality = "75"
+maximum_delivery_days = "14"
+budget_ceiling = "10000"
+policy_version = "1"
+
+[bid0]
+tender_ref = "2026041"
+supplier_ref = "1"
+price = "0"
+delivery_days = "0"
+stock_availability = "0"
+quality_rating = "0"
+local_contribution = "0"
+salt = "0"
+
+[bid1]
+tender_ref = "2026041"
+supplier_ref = "2"
+price = "0"
+delivery_days = "0"
+stock_availability = "0"
+quality_rating = "0"
+local_contribution = "0"
+salt = "0"
+
+[bid2]
+tender_ref = "2026041"
+supplier_ref = "3"
+price = "0"
+delivery_days = "0"
+stock_availability = "0"
+quality_rating = "0"
+local_contribution = "0"
+salt = "0"
