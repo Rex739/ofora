@@ -3,7 +3,10 @@
 import { useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGsapContext } from "@/hooks/use-gsap-context";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const rows = [
   ["Government contracts", "Create procurement processes that can stand up to regulator, auditor, supplier, and public scrutiny."],
@@ -18,51 +21,68 @@ export function UseCases() {
   const sectionRef = useRef<HTMLElement>(null);
   const [openRow, setOpenRow] = useState<string | null>(rows[0][0]);
 
-  useGsapContext(sectionRef, (_, reducedMotion) => {
-    if (reducedMotion) return;
+  useGsapContext(sectionRef, (context, reducedMotion) => {
+    if (reducedMotion || !sectionRef.current) return;
 
-    gsap.from(".use-row", {
-      y: 28,
-      autoAlpha: 0,
-      duration: 0.65,
-      stagger: 0.08,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 72%",
-        once: true
+    const selector = context.selector;
+    const useRows = selector ? selector(".use-row") : [];
+    const useDividers = selector ? selector(".use-divider") : [];
+
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 76%",
+      once: true,
+      onEnter: () => {
+        gsap.fromTo(
+          useRows,
+          { y: 28, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.65,
+            stagger: 0.08,
+            ease: "power3.out",
+            overwrite: "auto"
+          }
+        );
+
+        gsap.fromTo(
+          useDividers,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            transformOrigin: "left center",
+            duration: 0.5,
+            stagger: 0.06,
+            ease: "power2.out",
+            overwrite: "auto"
+          }
+        );
       }
     });
 
-    gsap.from(".use-divider", {
-      scaleX: 0,
-      transformOrigin: "left center",
-      duration: 0.5,
-      stagger: 0.06,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 72%",
-        once: true
-      }
-    });
+    ScrollTrigger.refresh();
+
+    return () => {
+      trigger.kill();
+    };
   });
 
   return (
-    <section ref={sectionRef} className="bg-white px-5 py-20 lg:px-8 lg:py-28" id="solutions">
+    <section ref={sectionRef} className="scroll-mt-24 bg-white px-5 py-20 lg:scroll-mt-28 lg:px-8 lg:py-28" id="solutions">
       <div className="mx-auto max-w-7xl">
         <h2 className="max-w-4xl text-[clamp(3.2rem,7vw,8rem)] font-black leading-[0.86] tracking-[-0.075em] text-ofora-deep">
           BUILT FOR
           <br />
           HIGH-STAKES PROCUREMENT.
         </h2>
-        <div className="mt-14 border-t border-ofora-deep/15">
+        <div className="mt-10 border-t border-ofora-deep/15 lg:mt-12">
           {rows.map(([title, copy]) => (
             <article
               key={title}
-              className={`use-row group relative grid gap-3 overflow-hidden border-b border-ofora-deep/15 py-7 transition duration-300 hover:bg-[#E7F5B8] hover:px-5 sm:grid-cols-[0.75fr_1fr_auto] sm:items-center ${openRow && openRow !== title ? "lg:opacity-55" : ""}`}
+              className={`use-row group relative grid gap-3 overflow-hidden border-b border-ofora-deep/15 py-7 transition-[background-color,padding,opacity] duration-300 ease-out hover:bg-[#E7F5B8] hover:px-5 sm:grid-cols-[0.75fr_1fr_auto] sm:items-center ${openRow && openRow !== title ? "lg:opacity-55" : ""}`}
             >
-              <span className="use-divider absolute bottom-0 left-0 h-px w-full bg-ofora-deep/20" />
+              <span className="use-divider absolute bottom-0 left-0 h-px w-full origin-left bg-ofora-deep/20" />
               <button
                 type="button"
                 onClick={() => setOpenRow(openRow === title ? null : title)}

@@ -1,13 +1,38 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGsapContext } from "@/hooks/use-gsap-context";
 
 const columns = [
-  ["Product", ["Overview", "Tenders", "Award validation", "Audit records"]],
-  ["Solutions", ["Governments", "Enterprises", "Development organizations", "Infrastructure"]],
-  ["Company", ["About", "Contact", "Privacy", "Terms"]]
+  {
+    title: "Product",
+    items: [
+      { label: "Overview", href: "/#product" },
+      { label: "Tenders", href: "/tenders" },
+      { label: "Award validation", href: "/awards" },
+      { label: "Audit records", href: "/audit" }
+    ]
+  },
+  {
+    title: "Solutions",
+    items: [
+      { label: "Governments", href: "/#solutions" },
+      { label: "Enterprises", href: "/#solutions" },
+      { label: "Development organizations", href: "/#solutions" },
+      { label: "Infrastructure", href: "/#solutions" }
+    ]
+  },
+  {
+    title: "Company",
+    items: [
+      { label: "Demo", href: "/demo" },
+      { label: "Supplier access", href: "/supplier" },
+      { label: "Dashboard", href: "/dashboard" },
+      { label: "Settings", href: "/settings" }
+    ]
+  }
 ];
 
 export function LandingFooter() {
@@ -31,12 +56,16 @@ export function LandingFooter() {
     <footer ref={footerRef} className="bg-white px-5 py-14 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 sm:grid-cols-3">
-          {columns.map(([title, items]) => (
-            <div key={title as string} className="footer-column">
-              <h2 className="text-sm font-black uppercase tracking-[0.18em] text-ofora-deep">{title as string}</h2>
+          {columns.map(({ title, items }) => (
+            <div key={title} className="footer-column">
+              <h2 className="text-sm font-black uppercase tracking-[0.18em] text-ofora-deep">{title}</h2>
               <ul className="mt-5 grid gap-3 text-sm font-medium text-ofora-muted">
-                {(items as string[]).map((item) => (
-                  <li key={item}>{item}</li>
+                {items.map((item) => (
+                  <li key={item.href + item.label}>
+                    <Link className="transition hover:text-ofora-deep" href={item.href}>
+                      {item.label}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>
