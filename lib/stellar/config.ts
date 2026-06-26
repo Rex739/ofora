@@ -9,5 +9,8 @@ export function getVerificationMode(): OforaVerificationMode {
 export const stellarConfig = {
   network: process.env.OFORA_STELLAR_NETWORK ?? "testnet",
   registryContractId: process.env.OFORA_REGISTRY_CONTRACT_ID ?? "",
-  verifierContractId: process.env.OFORA_VERIFIER_CONTRACT_ID ?? ""
+  verifierContractId: process.env.OFORA_VERIFIER_CONTRACT_ID ?? "",
+  verificationReceiptTxHash: process.env.OFORA_VERIFICATION_RECEIPT_TX_HASH ?? "",
+  registryFinalizationTxHash: process.env.OFORA_REGISTRY_FINALIZATION_TX_HASH ?? "",
+  fairAwardReceiptId: process.env.OFORA_FAIR_AWARD_RECEIPT_ID ?? ""
 };
