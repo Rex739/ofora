@@ -1,11 +1,14 @@
 import { AwardPolicy, EvaluationResult, SupplierSubmission } from "@/lib/types";
 
+const SCORE_SCALE = 10_000;
+const DISPLAY_SCALE = 10_000;
+
 export function calculatePriceEfficiencyScore(price: number, lowestEligiblePrice: number) {
-  return Math.min(100, (lowestEligiblePrice / price) * 100);
+  return Math.floor((lowestEligiblePrice * SCORE_SCALE) / price) / 100;
 }
 
 export function calculateDeliveryReliabilityScore(deliveryDays: number, maximumDeliveryDays: number) {
-  return Math.max(0, Math.min(100, ((maximumDeliveryDays - deliveryDays + 1) / maximumDeliveryDays) * 100));
+  return Math.max(0, Math.floor(((maximumDeliveryDays - deliveryDays + 1) * SCORE_SCALE) / maximumDeliveryDays) / 100);
 }
 
 export function calculateStockScore(stockAvailability: number) {
@@ -41,17 +44,19 @@ export function determineEligibility(submission: SupplierSubmission, policy: Awa
 
 export function calculateTotalWeightedScore(scores: Omit<EvaluationResult, "supplierId" | "totalScore" | "eligible">, policy: AwardPolicy) {
   const byId = {
-    price: scores.priceScore,
-    delivery: scores.deliveryScore,
-    stock: scores.stockScore,
-    quality: scores.qualityScore,
-    local: scores.localContributionScore
+    price: Math.floor(scores.priceScore * 100),
+    delivery: Math.floor(scores.deliveryScore * 100),
+    stock: Math.floor(scores.stockScore * 100),
+    quality: Math.floor(scores.qualityScore * 100),
+    local: Math.floor(scores.localContributionScore * 100)
   };
 
-  return policy.criteria.reduce((total, criterion) => {
+  const scaledTotal = policy.criteria.reduce((total, criterion) => {
     const score = byId[criterion.id as keyof typeof byId] ?? 0;
-    return total + score * (criterion.weight / 100);
+    return total + score * criterion.weight;
   }, 0);
+
+  return scaledTotal / DISPLAY_SCALE;
 }
 
 export function evaluateSubmissions(submissionList: SupplierSubmission[], policy: AwardPolicy): EvaluationResult[] {
