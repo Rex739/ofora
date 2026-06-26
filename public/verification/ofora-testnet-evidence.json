@@ -1,0 +1,15 @@
+{
+  "proofSystem": "Groth16",
+  "network": "Stellar testnet",
+  "tenderReference": "OFR-2026-041",
+  "selectedSupplierDisplayName": "Nova Relief Systems",
+  "fairAwardReceiptId": "FAR-OFR-2026-041-NOVA",
+  "verifierReceiptContractId": "CDGHNWSNU43NOBSH7PBOJ7F25LJ66UXPZKL6I3C6PXCP6JBZHH4JFS4E",
+  "registryContractId": "CACEBZHKO5ONJSBFY372FOZQADRKNR23JXFYG7KQOAMGYZPN7ISCHDRS",
+  "verificationReceiptTransactionHash": "6daf9e1a7d2b4d237771352be4c392bb0febc3d72ddd3de375ef8693199d33f2",
+  "registryFinalizationTransactionHash": "e95f7d95fa716c24f4123f87c57ab478f3db1ffa92dcfa2ffaf4e1a1dbde527e",
+  "validationTimestamp": "2026-06-26T13:50:23.000Z",
+  "finalTenderStatus": "Validated",
+  "paymentReadinessStatus": "ReadyForControlledRelease",
+  "safePublicVerificationContextCommitment": "7112816898d44e38e2f28da18dbda983cbd7150ef7802f2fad16b562ee5608db"
+}
