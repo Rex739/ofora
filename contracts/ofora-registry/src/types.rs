@@ -36,7 +36,33 @@ pub struct TenderRecord {
 }
 
 #[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct VerificationReceipt {
+    pub context_commitment: Bytes,
+    pub verified: bool,
+    pub verified_at: u64,
+    pub verifier_version: String,
+    pub consumed: bool,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FairAwardReceipt {
+    pub receipt_id: String,
+    pub tender_id: String,
+    pub selected_supplier_index: u32,
+    pub selected_bid_commitment: Bytes,
+    pub policy_version: String,
+    pub context_commitment: Bytes,
+    pub verifier_contract: Address,
+    pub verifier_version: String,
+    pub finalized_at: u64,
+    pub payment_status: PaymentStatus,
+}
+
+#[contracttype]
 #[derive(Clone)]
 pub enum DataKey {
     Tender(String),
+    FairAwardReceipt(String),
 }

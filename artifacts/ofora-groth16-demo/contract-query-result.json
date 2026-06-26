@@ -1,0 +1,6 @@
+{
+  "network": "testnet",
+  "verifierContractId": "CD2TRAV5I6RPVNP4JKMK53NVGWVZA55RQQCX6NYQAZZQR5JLH6ERDTX7",
+  "query": "stellar contract info interface --id CD2TRAV5I6RPVNP4JKMK53NVGWVZA55RQQCX6NYQAZZQR5JLH6ERDTX7 --network testnet",
+  "output": "ℹ️  Network: Test SDF Network ; September 2015\n🌎 Downloading contract spec: CD2TRAV5I6RPVNP4JKMK53NVGWVZA55RQQCX6NYQAZZQR5JLH6ERDTX7\n#[soroban_sdk::contractargs(name = \"Args\")]\n#[soroban_sdk::contractclient(name = \"Client\")]\npub trait Contract {\n    fn verify(\n        env: soroban_sdk::Env,\n        vk_bytes: soroban_sdk::Bytes,\n        proof_bytes: soroban_sdk::Bytes,\n        public_signal_bytes: soroban_sdk::Bytes,\n    ) -> bool;\n    fn verify_proof(\n        env: soroban_sdk::Env,\n        vk_bytes: soroban_sdk::Bytes,\n        proof_bytes: soroban_sdk::Bytes,\n        public_signal_bytes: soroban_sdk::Bytes,\n    ) -> Result<bool, Error>;\n}\n#[soroban_sdk::contracterror(export = false)]\n#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]\npub enum Error {\n    MalformedVerificationKey = 1,\n    MalformedProof = 2,\n    MalformedPublicSignals = 3,\n}"
+}

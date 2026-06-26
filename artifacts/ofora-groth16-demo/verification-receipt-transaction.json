@@ -1,0 +1,9 @@
+{
+  "network": "testnet",
+  "kind": "verificationReceipt",
+  "contractId": "CDGHNWSNU43NOBSH7PBOJ7F25LJ66UXPZKL6I3C6PXCP6JBZHH4JFS4E",
+  "status": 0,
+  "transactionHash": "6daf9e1a7d2b4d237771352be4c392bb0febc3d72ddd3de375ef8693199d33f2",
+  "output": "ℹ️  Simulating transaction…\nℹ️  Signing transaction: 6daf9e1a7d2b4d237771352be4c392bb0febc3d72ddd3de375ef8693199d33f2\n🌎 Sending transaction…\n✅ Transaction submitted successfully!\n🔗 https://stellar.expert/explorer/testnet/tx/6daf9e1a7d2b4d237771352be4c392bb0febc3d72ddd3de375ef8693199d33f2\ntrue",
+  "recordedAt": "2026-06-26T13:49:38.835Z"
+}

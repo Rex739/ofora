@@ -1,0 +1,10 @@
+{
+  "network": "testnet",
+  "registryContractId": "CACEBZHKO5ONJSBFY372FOZQADRKNR23JXFYG7KQOAMGYZPN7ISCHDRS",
+  "receiptId": "FAR-OFR-2026-041-NOVA",
+  "tenderId": "OFR-2026-041",
+  "selectedSupplier": "Nova",
+  "selectedSupplierIndex": 1,
+  "output": "{\"context_commitment\":\"7112816898d44e38e2f28da18dbda983cbd7150ef7802f2fad16b562ee5608db\",\"finalized_at\":1782481823,\"payment_status\":\"ReadyForControlledRelease\",\"policy_version\":\"1\",\"receipt_id\":\"FAR-OFR-2026-041-NOVA\",\"selected_bid_commitment\":\"22f87c8f84a72e6083409f92409665ee9909f044a190d9c1e8b3f77ec2268512\",\"selected_supplier_index\":1,\"tender_id\":\"OFR-2026-041\",\"verifier_contract\":\"CDGHNWSNU43NOBSH7PBOJ7F25LJ66UXPZKL6I3C6PXCP6JBZHH4JFS4E\",\"verifier_version\":\"ofora-groth16-receipt-v1\"}",
+  "recordedAt": "2026-06-26T13:50:30.011Z"
+}

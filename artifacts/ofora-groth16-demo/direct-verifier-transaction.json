@@ -1,0 +1,11 @@
+{
+  "network": "testnet",
+  "verifierContractId": "CD2TRAV5I6RPVNP4JKMK53NVGWVZA55RQQCX6NYQAZZQR5JLH6ERDTX7",
+  "transactionHash": "c448ebb869a14113a692530dbb4060d5d25104b3f3d4f0062ff1d1eabd09f556",
+  "proofAccepted": true,
+  "verificationContextCommitment": "51144048282283107943921848727894403461614665138693260205291668198918718884059",
+  "proofSystem": "Groth16",
+  "verifiedAt": "2026-06-26T13:15:09.745Z",
+  "rawOutput": "ℹ️  Simulating transaction…\nℹ️  Signing transaction: c448ebb869a14113a692530dbb4060d5d25104b3f3d4f0062ff1d1eabd09f556\n🌎 Sending transaction…\n✅ Transaction submitted successfully!\n🔗 https://stellar.expert/explorer/testnet/tx/c448ebb869a14113a692530dbb4060d5d25104b3f3d4f0062ff1d1eabd09f556\ntrue",
+  "command": "OFORA_STELLAR_SOURCE_ACCOUNT=ofora-deployer OFORA_GROTH16_VERIFIER_ID=CD2TRAV5I6RPVNP4JKMK53NVGWVZA55RQQCX6NYQAZZQR5JLH6ERDTX7 scripts/stellar/invoke-ofora-groth16-verifier-testnet.sh"
+}

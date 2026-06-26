@@ -1,0 +1,6 @@
+{
+  "network": "testnet",
+  "verifierContractId": "CDKVPGCMGUPY724BOTXKCAQ7P7H52OIGF3J5EUZR3YRRN2O3R557K6OS",
+  "status": "failed",
+  "output": "❌ error: transaction simulation failed: HostError: Error(Budget, ExceededLimit)\nDebugInfo not available"
+}

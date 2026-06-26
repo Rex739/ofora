@@ -1,0 +1,6 @@
+{
+  "network": "testnet",
+  "registryContractId": "CB3CVGUVNA3FEZ2GCPNG2LB3OVMGEVGFOXOTFWMOILUPLJ5Y5RZ3KY4F",
+  "status": "not-submitted",
+  "reason": "Current compressed proof exposes one 32-byte verification context commitment. The deployed registry path is the original nine-public-input validation path, and direct compressed verifier simulation still exceeds testnet budget."
+}

@@ -1,0 +1,9 @@
+{
+  "network": "testnet",
+  "registryContractId": "CACEBZHKO5ONJSBFY372FOZQADRKNR23JXFYG7KQOAMGYZPN7ISCHDRS",
+  "tenderId": "OFR-2026-041",
+  "status": "Validated",
+  "paymentStatus": "ReadyForControlledRelease",
+  "output": "{\"admin\":\"GATHPBSVRHQYH2EUR4JMGIXWVYLE2JUI5SHP7ZRZ7EORYGAK6O3QRFGM\",\"award_receipt_id\":\"FAR-OFR-2026-041-NOVA\",\"bid_commitments\":[\"22f87c8f8485c0846756ed5d681ce829cbb9b5b29a89a811d5b073f1e545cd9e\",\"22f87c8f84a72e6083409f92409665ee9909f044a190d9c1e8b3f77ec2268512\",\"22f87c8f84c89c3af4ccd8bb71d8b6b90e1a81eeff31d2e8d68c8bac538fde67\"],\"max_bid_commitments\":3,\"payment_status\":\"ReadyForControlledRelease\",\"policy_commitment\":\"13919df2778905066e0a61c105fdc372fd1fa72bdfd067b9a7950ed504428c31\",\"policy_version\":\"1\",\"status\":\"Validated\",\"submission_deadline\":1782675600,\"tender_id\":\"OFR-2026-041\",\"validated_winner_commitment\":\"22f87c8f84a72e6083409f92409665ee9909f044a190d9c1e8b3f77ec2268512\",\"validation_timestamp\":1782481823,\"verifier_contract\":\"CDGHNWSNU43NOBSH7PBOJ7F25LJ66UXPZKL6I3C6PXCP6JBZHH4JFS4E\"}",
+  "recordedAt": "2026-06-26T13:50:29.943Z"
+}

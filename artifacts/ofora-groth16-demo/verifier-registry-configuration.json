@@ -1,0 +1,7 @@
+{
+  "network": "testnet",
+  "verifierContractId": "CDGHNWSNU43NOBSH7PBOJ7F25LJ66UXPZKL6I3C6PXCP6JBZHH4JFS4E",
+  "registryContractId": "CACEBZHKO5ONJSBFY372FOZQADRKNR23JXFYG7KQOAMGYZPN7ISCHDRS",
+  "verifierVersion": "ofora-groth16-receipt-v1",
+  "configuredAt": "2026-06-26T13:48:55.176Z"
+}

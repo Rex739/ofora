@@ -1,0 +1,9 @@
+{
+  "network": "testnet",
+  "verifierContractId": "CDGHNWSNU43NOBSH7PBOJ7F25LJ66UXPZKL6I3C6PXCP6JBZHH4JFS4E",
+  "status": "verified",
+  "consumptionStatus": "consumed",
+  "contextCommitmentFile": "soroban-public.bin",
+  "output": "{\"consumed\":true,\"context_commitment\":\"7112816898d44e38e2f28da18dbda983cbd7150ef7802f2fad16b562ee5608db\",\"verified\":true,\"verified_at\":1782481778,\"verifier_version\":\"ofora-groth16-receipt-v1\"}",
+  "recordedAt": "2026-06-26T13:52:48.806Z"
+}

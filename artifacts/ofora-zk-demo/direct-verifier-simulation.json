@@ -1,0 +1,11 @@
+{
+  "network": "testnet",
+  "verifierContractId": "CDKVPGCMGUPY724BOTXKCAQ7P7H52OIGF3J5EUZR3YRRN2O3R557K6OS",
+  "status": 1,
+  "proofSize": 14592,
+  "verificationKeySize": 1760,
+  "publicInputCount": 1,
+  "publicInputEncodingSize": 32,
+  "output": "Verbose local CLI trace redacted for public submission. Result: see status.",
+  "redactedForPublicSubmission": true
+}

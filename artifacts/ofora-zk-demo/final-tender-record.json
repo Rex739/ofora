@@ -1,0 +1,6 @@
+{
+  "network": "testnet",
+  "tenderReference": "OFR-2026-041",
+  "tender": "{\"admin\":\"GATHPBSVRHQYH2EUR4JMGIXWVYLE2JUI5SHP7ZRZ7EORYGAK6O3QRFGM\",\"award_receipt_id\":null,\"bid_commitments\":[\"0e1858dd3646fe7b91fba3d71280d7a04555b99d4c570306a2ce4616a3b2ff24\",\"187d68b45bead7e1e97914d7459ac64c6f722fe6b497db1c7a521bd307ce4279\",\"0abff378b55779669e1ea88bf8110f1e3e885ec187ce92d7df2ad92d46073457\"],\"max_bid_commitments\":3,\"payment_status\":\"NotReady\",\"policy_commitment\":\"2f948faee4d6c181391e29c65d0ddf1e334b614d5b8908dc6889027d469b5b56\",\"policy_version\":\"1\",\"status\":\"EvaluationInProgress\",\"submission_deadline\":1782675600,\"tender_id\":\"OFR-2026-041\",\"validated_winner_commitment\":null,\"validation_timestamp\":null,\"verifier_contract\":\"CBIOI5PLEMPJYZQ7C5QAY7SFK63QYNWMCWTSEGWFULFKM6BEPX6A2RW3\"}",
+  "receipt": "null"
+}

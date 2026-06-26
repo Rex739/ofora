@@ -1,0 +1,9 @@
+{
+  "network": "testnet",
+  "kind": "registryFinalization",
+  "contractId": "CACEBZHKO5ONJSBFY372FOZQADRKNR23JXFYG7KQOAMGYZPN7ISCHDRS",
+  "status": 0,
+  "transactionHash": "e95f7d95fa716c24f4123f87c57ab478f3db1ffa92dcfa2ffaf4e1a1dbde527e",
+  "output": "ℹ️  Simulating transaction…\nℹ️  Signing transaction: e95f7d95fa716c24f4123f87c57ab478f3db1ffa92dcfa2ffaf4e1a1dbde527e\n🌎 Sending transaction…\n✅ Transaction submitted successfully!\n🔗 https://stellar.expert/explorer/testnet/tx/e95f7d95fa716c24f4123f87c57ab478f3db1ffa92dcfa2ffaf4e1a1dbde527e\n📅 CACEBZHKO5ONJSBFY372FOZQADRKNR23JXFYG7KQOAMGYZPN7ISCHDRS - Success - Event: ProofBackedAwardFinalized (proof_backed_award_finalized), tender_id: \"OFR-2026-041\", receipt_id: \"FAR-OFR-2026-041-NOVA\", winner_commitment: \"22f87c8f84a72e6083409f92409665ee9909f044a190d9c1e8b3f77ec2268512\", context_commitment: \"7112816898d44e38e2f28da18dbda983cbd7150ef7802f2fad16b562ee5608db\"",
+  "recordedAt": "2026-06-26T13:50:27.521Z"
+}
