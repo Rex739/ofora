@@ -2,6 +2,7 @@
 **/.next/
 node_modules/
 **/node_modules/
+**/target/
 out/
 dist/
 coverage/
@@ -10,6 +11,8 @@ contracts/**/target/
 .env*
 !.env.example
 zk/Prover.local.toml
+zk/Prover.toml
+zk/Prover.*.toml
 artifacts/ofora-demo/*.local.json
 artifacts/ofora-demo/*witness*
 artifacts/ofora-demo/*salt*
@@ -17,7 +20,18 @@ artifacts/ofora-demo/proof
 artifacts/ofora-demo/vk
 artifacts/ofora-demo/public_inputs
 *.secret
+*.seed
+*seed-phrase*
+*secret-key*
+*private-key*
 artifacts/private/
+**/*.wtns
+**/*.zkey
+**/*.ptau
+**/*witness*
+**/*salt*
+**/stellar/identity/
+**/.stellar/
 zk/private/
 vendor/**/target/
 target/
