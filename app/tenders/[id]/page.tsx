@@ -12,7 +12,6 @@ import { EvaluationWorkspace } from "@/components/evaluation/evaluation-workspac
 import { TenderTimeline } from "@/components/tenders/tender-timeline";
 import { primaryTender, submissions, suppliers, tenderList } from "@/lib/mock-data";
 import { evaluateSubmissions } from "@/lib/scoring";
-import { PaymentStatus } from "@/lib/types";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 
 export default async function TenderDetailPage({
@@ -155,8 +154,8 @@ export default async function TenderDetailPage({
               <div id="award-decision" className="space-y-6">
                 <AwardDecisionPanel tender={primaryTender} suppliers={suppliers} />
                 <RecordPanel className="p-6">
-                  <h2 className="text-xl font-black tracking-[-0.05em] text-ofora-deep">Payment readiness</h2>
-                  <p className="mt-4 text-sm leading-6 text-ofora-muted">{tender.status === "Validated" ? PaymentStatus.ReadyForControlledRelease : tender.paymentStatus}</p>
+                  <h2 className="text-xl font-black tracking-[-0.05em] text-ofora-deep">Controlled release status</h2>
+                  <p className="mt-4 text-sm leading-6 text-ofora-muted">{tender.status === "Validated" ? "Controlled release eligible. Payment execution is not included in this hackathon MVP." : tender.paymentStatus}</p>
                 </RecordPanel>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ReactNode } from "react";
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ArrowRight, CheckCircle2, ShieldAlert, ShieldCheck, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, Copy, ExternalLink, Info, ShieldAlert, ShieldCheck, X } from "lucide-react";
 import { OforaMark } from "@/components/landing/ofora-mark";
 import { AppButton, InlineMetric, RecordPanel } from "@/components/shared/app-primitives";
 import { AwardPolicyCard } from "@/components/tenders/award-policy-card";
@@ -13,8 +13,12 @@ import { getAwardState, issueReceipt, markPaymentReady, recordAwardAttempt, rese
 import { evaluateSupplierAssessments, getDemoEvaluationSubmissions, getHighestEligibleAssessment, SupplierAssessment } from "@/lib/evaluation-engine";
 import { createFairAwardReceipt } from "@/lib/receipt-utils";
 import { primaryTender } from "@/lib/mock-data";
-import { PaymentStatus, Tender } from "@/lib/types";
+import { Tender } from "@/lib/types";
 import { cn, formatCurrency, formatDateTime } from "@/lib/utils";
+import { shortenReference, stellarExpertTxUrl, testnetEvidence } from "@/lib/verification-evidence";
+
+const verificationMode = process.env.NEXT_PUBLIC_OFORA_VERIFICATION_MODE === "real" ? "real" : "mock";
+const verificationLabel = verificationMode === "real" ? "VERIFIED ON STELLAR TESTNET" : "Demo mode — local evaluation";
 
 export function EvaluationWorkspace({ tender }: { tender: Tender }) {
   const assessments = useMemo(() => evaluateSupplierAssessments(getDemoEvaluationSubmissions(), tender.policy), [tender.policy]);
@@ -117,14 +121,15 @@ export function EvaluationWorkspace({ tender }: { tender: Tender }) {
       })
     );
     setAwardState(withReceipt);
-    setToast("Award validated. Fair Award Receipt issued.");
+    setToast(verificationMode === "real" ? "Award validated. Fair Award Receipt issued." : "Award validated. Demo Award Summary created.");
   }
 
   return (
     <div className="space-y-8">
       {toast ? <div className="fixed right-5 top-5 z-[80] max-w-sm rounded-lg border border-ofora-verify/30 bg-ofora-mist px-4 py-3 text-sm font-black text-ofora-green shadow-panel">{toast}</div> : null}
-      <section className="border-y border-ofora-border bg-white px-5 py-4 text-sm font-semibold text-ofora-muted">
-        Supplier proposals are being assessed against the selection rules locked before submissions began.
+      <section className="flex flex-col gap-3 border-y border-ofora-border bg-white px-5 py-4 text-sm font-semibold text-ofora-muted sm:flex-row sm:items-center sm:justify-between">
+        <span>{verificationMode === "real" ? "This screen shows confirmed public testnet evidence for the finalized Nova award." : "This walkthrough uses local sample data. It does not submit an on-chain award record."}</span>
+        <span className="w-fit rounded-full border border-ofora-border bg-ofora-canvas px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-ofora-green">{verificationLabel}</span>
       </section>
 
       <div className="grid gap-6 xl:grid-cols-12">
@@ -146,10 +151,11 @@ export function EvaluationWorkspace({ tender }: { tender: Tender }) {
             onSelect={(supplierId) => setSelectedSupplierId(supplierId)}
             onValidate={validateAward}
             onReview={(supplierId) => setDrawerSupplierId(supplierId)}
+            verificationLabel={verificationLabel}
           />
           <AwardPolicyCard policy={tender.policy} />
           <PaymentReadinessPanel awardState={awardState} onPrepare={() => setPaymentOpen(true)} />
-          {awardState.receipt ? <FairAwardReceipt receipt={awardState.receipt} onPrepare={() => setPaymentOpen(true)} /> : null}
+          {awardState.receipt ? <FairAwardReceipt receipt={awardState.receipt} onPrepare={() => setPaymentOpen(true)} verificationMode={verificationMode} /> : null}
           {process.env.NODE_ENV !== "production" ? (
             <RecordPanel className="border-dashed p-5">
               <p className="text-xs font-black uppercase tracking-[0.16em] text-ofora-muted">Development helper</p>
@@ -190,7 +196,7 @@ export function EvaluationWorkspace({ tender }: { tender: Tender }) {
           const next = markPaymentReady(awardState);
           setAwardState(next);
           setPaymentOpen(false);
-          setToast("Award marked ready for controlled release.");
+          setToast("Controlled release eligibility recorded.");
         }}
       />
     </div>
@@ -263,7 +269,8 @@ function AwardDecisionPanel({
   awardState,
   onSelect,
   onValidate,
-  onReview
+  onReview,
+  verificationLabel
 }: {
   assessments: SupplierAssessment[];
   selectedSupplierId: string;
@@ -271,6 +278,7 @@ function AwardDecisionPanel({
   onSelect: (supplierId: string) => void;
   onValidate: () => void;
   onReview: (supplierId: string) => void;
+  verificationLabel: string;
 }) {
   const selected = assessments.find((assessment) => assessment.supplierId === selectedSupplierId) ?? assessments[0];
 
@@ -314,6 +322,7 @@ function AwardDecisionPanel({
         >
           <ShieldCheck className="h-4 w-4" />Validate award
         </button>
+        <p className="mt-3 text-center text-xs font-black uppercase tracking-[0.12em] text-ofora-muted">{verificationLabel}</p>
         <ValidationOutcome state={awardState} selected={selected} onReview={onReview} onChooseAnother={() => onSelect("sup-nova")} />
       </div>
     </section>
@@ -353,7 +362,7 @@ function ValidationOutcome({ state, selected, onReview, onChooseAnother }: { sta
   return (
     <OutcomeShell tone="validated" label="Award validated" title="This supplier can be awarded the tender." icon={<CheckCircle2 className="h-5 w-5" />}>
       <p>Nova Relief Systems has been independently confirmed as the highest-scoring eligible supplier under the selection rules locked before submissions began.</p>
-      <OutcomeRows rows={[["Requirement status", "Eligible"], ["Award result", "Validated"], ["Policy integrity", "Confirmed"], ["Payment status", "Ready for controlled release"]]} positive />
+      <OutcomeRows rows={[["Requirement status", "Eligible"], ["Award result", "Validated"], ["Policy integrity", "Confirmed"], ["Payment status", "Controlled release eligible"]]} positive />
     </OutcomeShell>
   );
 }
@@ -410,7 +419,8 @@ function ConfidentialAssessmentDrawer({ assessment, open, onOpenChange, onSelect
   );
 }
 
-function FairAwardReceipt({ receipt, onPrepare }: { receipt: NonNullable<StoredAwardState["receipt"]>; onPrepare: () => void }) {
+function FairAwardReceipt({ receipt, onPrepare, verificationMode }: { receipt: NonNullable<StoredAwardState["receipt"]>; onPrepare: () => void; verificationMode: "mock" | "real" }) {
+  const realMode = verificationMode === "real";
   return (
     <section className="relative overflow-hidden border border-ofora-deep/20 bg-[#fffef8] p-6 shadow-panel">
       <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(#063524_1px,transparent_1px),linear-gradient(90deg,#063524_1px,transparent_1px)] [background-size:22px_22px]" />
@@ -419,8 +429,8 @@ function FairAwardReceipt({ receipt, onPrepare }: { receipt: NonNullable<StoredA
           <div className="flex items-center gap-3">
             <OforaMark className="h-10 w-10" />
             <div>
-              <h2 className="text-2xl font-black tracking-[-0.055em] text-ofora-deep">Fair Award Receipt</h2>
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-ofora-green">Independent award validation record</p>
+              <h2 className="text-2xl font-black tracking-[-0.055em] text-ofora-deep">{realMode ? "Fair Award Receipt" : "Demo Award Summary"}</h2>
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-ofora-green">{realMode ? "Independent award validation record" : "Local sample evaluation record"}</p>
             </div>
           </div>
           <div className="flex h-16 w-16 items-center justify-center rounded-full border border-ofora-green bg-ofora-mist text-ofora-green">
@@ -428,24 +438,86 @@ function FairAwardReceipt({ receipt, onPrepare }: { receipt: NonNullable<StoredA
           </div>
         </div>
         <dl className="mt-5 grid gap-0 text-sm">
-          <ReceiptRow label="Receipt ID" value={receipt.id} />
+          <ReceiptRow label={realMode ? "Fair Award Receipt" : "Demo summary ID"} value={realMode ? testnetEvidence.fairAwardReceiptId : receipt.id} />
           <ReceiptRow label="Tender" value="Emergency Solar Lantern Procurement" />
           <ReceiptRow label="Tender ID" value={receipt.tenderId} />
           <ReceiptRow label="Organization" value="Global Relief & Infrastructure Network" />
           <ReceiptRow label="Awarded supplier" value={receipt.supplierName} />
-          <ReceiptRow label="Award value" value={`${formatCurrency(receipt.awardValue, receipt.currency)} ${receipt.currency}`} />
           <ReceiptRow label="Selection rules" value="Locked before supplier submissions" />
-          <ReceiptRow label="Validation status" value={receipt.validationStatus} positive />
-          <ReceiptRow label="Payment readiness" value={receipt.paymentStatus} positive />
+          <ReceiptRow label="Validation status" value={realMode ? "Award independently validated" : "Local validation only"} positive />
+          {realMode ? <ReceiptRow label="Stellar testnet verification" value="Confirmed" positive /> : null}
+          <ReceiptRow label="Payment status" value="Controlled release eligible" positive />
           <ReceiptRow label="Validation timestamp" value={formatDateTime(receipt.issuedAt)} />
         </dl>
+        {realMode ? <RealEvidencePanel /> : <p className="mt-5 border-y border-ofora-border py-4 text-sm font-semibold text-ofora-muted">This walkthrough uses local sample data. It does not submit an on-chain award record.</p>}
         <p className="mt-5 border-y border-ofora-border py-4 text-sm font-semibold text-ofora-muted">Competing supplier proposals remain confidential.</p>
         <div className="mt-5 grid gap-2">
           <Link href="/audit/audit-ofr-2026-041" className="ofora-focus inline-flex justify-center rounded-lg border border-ofora-border bg-white px-4 py-3 text-sm font-black text-ofora-deep">View audit record</Link>
           <button type="button" className="ofora-focus rounded-lg border border-ofora-border bg-white px-4 py-3 text-sm font-black text-ofora-deep">Export receipt</button>
-          <button type="button" onClick={onPrepare} className="ofora-focus rounded-lg bg-ofora-green px-4 py-3 text-sm font-black text-white">Proceed to payment release</button>
+          <button type="button" onClick={onPrepare} className="ofora-focus rounded-lg bg-ofora-green px-4 py-3 text-sm font-black text-white">Mark controlled release eligibility</button>
         </div>
       </div>
+    </section>
+  );
+}
+
+function RealEvidencePanel() {
+  const [copied, setCopied] = useState(false);
+  const verificationReference = [
+    `Verifier receipt contract: ${testnetEvidence.verifierReceiptContractId}`,
+    `Registry contract: ${testnetEvidence.registryContractId}`,
+    `Verification receipt transaction: ${testnetEvidence.verificationReceiptTransactionHash}`,
+    `Award record transaction: ${testnetEvidence.registryFinalizationTransactionHash}`,
+    `Fair Award Receipt: ${testnetEvidence.fairAwardReceiptId}`
+  ].join("\n");
+
+  async function copyReference() {
+    await navigator.clipboard.writeText(verificationReference);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  }
+
+  return (
+    <section className="mt-5 border border-ofora-green/30 bg-white p-5">
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-ofora-green">VERIFIED ON STELLAR TESTNET</p>
+      <h3 className="mt-2 text-2xl font-black tracking-[-0.055em] text-ofora-deep">Award independently validated.</h3>
+      <p className="mt-3 text-sm leading-6 text-ofora-muted">Nova Relief Systems was confirmed as the eligible supplier with the highest valid score under the selection rules locked before submissions began.</p>
+      <dl className="mt-5 grid gap-0 text-sm">
+        <ReceiptRow label="Fair Award Receipt" value={testnetEvidence.fairAwardReceiptId} positive />
+        <ReceiptRow label="Proof system" value={testnetEvidence.proofSystem} />
+        <ReceiptRow label="Verification receipt" value="Confirmed on Stellar testnet" positive />
+        <ReceiptRow label="Award record" value="Finalized on Stellar testnet" positive />
+        <ReceiptRow label="Verifier contract" value={shortenReference(testnetEvidence.verifierReceiptContractId)} />
+        <ReceiptRow label="Registry contract" value={shortenReference(testnetEvidence.registryContractId)} />
+        <ReceiptRow label="Verification transaction" value={shortenReference(testnetEvidence.verificationReceiptTransactionHash, 10, 8)} />
+        <ReceiptRow label="Award record transaction" value={shortenReference(testnetEvidence.registryFinalizationTransactionHash, 10, 8)} />
+        <ReceiptRow label="Tender status" value={testnetEvidence.finalTenderStatus} positive />
+      </dl>
+      <p className="mt-4 border-t border-ofora-border pt-4 text-sm font-semibold text-ofora-muted">Payment execution is not included in this hackathon MVP.</p>
+      <div className="mt-5 grid gap-2">
+        <a href={stellarExpertTxUrl(testnetEvidence.verificationReceiptTransactionHash)} target="_blank" rel="noreferrer" className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">View verification receipt <ExternalLink className="h-4 w-4" /></a>
+        <a href={stellarExpertTxUrl(testnetEvidence.registryFinalizationTransactionHash)} target="_blank" rel="noreferrer" className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">View award record <ExternalLink className="h-4 w-4" /></a>
+        <button type="button" onClick={copyReference} className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg bg-ofora-deep px-3 py-2.5 text-sm font-black text-white"><Copy className="h-4 w-4" />{copied ? "Copied" : "Copy verification reference"}</button>
+      </div>
+      <Dialog.Root>
+        <Dialog.Trigger className="ofora-focus mt-4 inline-flex items-center gap-2 text-sm font-black text-ofora-green underline-offset-4 hover:underline"><Info className="h-4 w-4" />Technical verification details</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-40 bg-ofora-ink/35" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 border border-ofora-border bg-white p-6 shadow-panel">
+            <Dialog.Title className="text-2xl font-black tracking-[-0.055em] text-ofora-deep">Technical verification details</Dialog.Title>
+            <ul className="mt-5 grid gap-3 text-sm font-semibold leading-6 text-ofora-muted">
+              {[
+                "Groth16 proof verified through a Soroban contract",
+                "Verification receipt stored on Stellar testnet",
+                "Receipt consumed once by the Ofora registry",
+                "Award record finalized against the locked tender context",
+                "Competing commercial submissions remain protected"
+              ].map((item) => <li key={item} className="border-b border-ofora-border pb-3">{item}</li>)}
+            </ul>
+            <Dialog.Close className="ofora-focus mt-6 rounded-lg bg-ofora-deep px-4 py-2.5 text-sm font-black text-white">Close</Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </section>
   );
 }
@@ -454,14 +526,14 @@ function PaymentReadinessPanel({ awardState, onPrepare }: { awardState: StoredAw
   const ready = awardState.decisionStatus === "Validated";
   return (
     <RecordPanel className="p-6">
-      <h2 className="text-xl font-black tracking-[-0.05em] text-ofora-deep">Payment readiness</h2>
+      <h2 className="text-xl font-black tracking-[-0.05em] text-ofora-deep">Controlled release status</h2>
       <p className={cn("mt-4 text-2xl font-black tracking-[-0.05em]", ready ? "text-ofora-green" : "text-ofora-muted")}>
-        {ready ? PaymentStatus.ReadyForControlledRelease : "Not ready"}
+        {ready ? "Controlled release eligible" : "Not ready"}
       </p>
       <p className="mt-3 text-sm leading-6 text-ofora-muted">
-        {ready ? "The award has been validated against the tender’s locked rules. Payment can now proceed through the organization’s approved process." : "Payment readiness stays inactive until the award is validated."}
+        {ready ? "The award has been validated against the tender’s locked rules. Payment execution is not included in this hackathon MVP." : "Controlled release eligibility stays inactive until the award is validated."}
       </p>
-      {ready ? <button type="button" onClick={onPrepare} className="ofora-focus mt-5 rounded-lg bg-ofora-deep px-4 py-3 text-sm font-black text-white">Prepare payment release</button> : null}
+      {ready ? <button type="button" onClick={onPrepare} className="ofora-focus mt-5 rounded-lg bg-ofora-deep px-4 py-3 text-sm font-black text-white">Mark eligibility</button> : null}
     </RecordPanel>
   );
 }
@@ -472,19 +544,18 @@ function PaymentReleaseModal({ open, onOpenChange, awardState, onConfirm }: { op
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-40 bg-ofora-ink/35" />
         <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 border border-ofora-border bg-white p-6 shadow-panel">
-          <Dialog.Title className="text-3xl font-black tracking-[-0.06em] text-ofora-deep">Prepare payment release</Dialog.Title>
+          <Dialog.Title className="text-3xl font-black tracking-[-0.06em] text-ofora-deep">Controlled release eligible</Dialog.Title>
           <Dialog.Description className="mt-3 text-sm leading-6 text-ofora-muted">
-            This confirms that the validated award is ready to move into your organization’s approved payment process.
+            This records that the award has been validated for controlled release review. Payment execution is not included in this hackathon MVP.
           </Dialog.Description>
           <dl className="mt-5 grid gap-3 border border-ofora-border bg-ofora-canvas p-4 text-sm">
             <ReceiptRow label="Awarded supplier" value={awardState.receipt?.supplierName ?? "Not validated"} />
-            <ReceiptRow label="Award value" value={awardState.receipt ? formatCurrency(awardState.receipt.awardValue, awardState.receipt.currency) : "Not available"} />
-            <ReceiptRow label="Fair Award Receipt ID" value={awardState.receipt?.id ?? "Not issued"} />
+            <ReceiptRow label="Fair Award Receipt ID" value={verificationMode === "real" ? testnetEvidence.fairAwardReceiptId : awardState.receipt?.id ?? "Not issued"} />
             <ReceiptRow label="Validation status" value={awardState.receipt?.validationStatus ?? "Not validated"} />
           </dl>
           <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <Dialog.Close className="ofora-focus rounded-lg border border-ofora-border bg-white px-4 py-2.5 text-sm font-black text-ofora-deep">Cancel</Dialog.Close>
-            <button type="button" onClick={onConfirm} className="ofora-focus rounded-lg bg-ofora-green px-4 py-2.5 text-sm font-black text-white">Mark as ready for payment</button>
+            <button type="button" onClick={onConfirm} className="ofora-focus rounded-lg bg-ofora-green px-4 py-2.5 text-sm font-black text-white">Confirm eligibility note</button>
           </div>
         </Dialog.Content>
       </Dialog.Portal>
