@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { OforaMark } from "@/components/landing/ofora-mark";
 
 const navItems = [
-  { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Tenders", href: "/tenders", icon: ClipboardList },
   { label: "Suppliers", href: "/supplier", icon: Users },
   { label: "Awards", href: "/awards", icon: Award },
@@ -15,9 +15,9 @@ const navItems = [
   { label: "Settings", href: "/settings", icon: Settings }
 ];
 
-export function OforaLogo() {
+export function OforaLogo({ href = "/" }: { href?: string }) {
   return (
-    <Link href="/" className="flex items-center gap-3" aria-label="Ofora home">
+    <Link href={href} className="flex items-center gap-3" aria-label="Ofora home">
       <OforaMark className="h-10 w-10 border-[#E7F5B8] bg-ofora-deep" />
       <span>
         <span className="block text-xl font-black leading-none tracking-[-0.05em] text-white">Ofora</span>

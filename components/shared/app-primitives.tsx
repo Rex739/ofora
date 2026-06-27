@@ -103,9 +103,9 @@ export function InlineMetric({ label, value, inverted = false }: { label: string
 
 export function MetadataRow({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="grid grid-cols-[0.8fr_1fr] gap-4 border-b border-ofora-border py-3 text-sm">
+    <div className="grid gap-1 border-b border-ofora-border py-3 text-sm sm:grid-cols-[0.8fr_1fr] sm:gap-4">
       <dt className="text-ofora-muted">{label}</dt>
-      <dd className="font-semibold text-ofora-ink">{value}</dd>
+      <dd className="min-w-0 break-words font-semibold text-ofora-ink">{value}</dd>
     </div>
   );
 }
