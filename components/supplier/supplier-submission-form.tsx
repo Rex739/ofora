@@ -45,8 +45,8 @@ export function SupplierSubmissionForm() {
             <p className="mt-6 text-sm font-black uppercase tracking-[0.18em] text-ofora-green">Reference: SUB-OFR-2026-041-004</p>
           </RecordPanel>
         ) : (
-          <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-            <aside className="space-y-3">
+          <div className="grid min-w-0 gap-6 lg:grid-cols-[280px_1fr]">
+            <aside className="min-w-0 space-y-3">
               {progress.map((item, index) => (
                 <div key={item} className="border-l border-ofora-border py-3 pl-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-ofora-muted">0{index + 1}</p>
@@ -58,19 +58,19 @@ export function SupplierSubmissionForm() {
                 Your submission is confidential.
               </div>
             </aside>
-            <form className="border border-ofora-border bg-white p-6" onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }}>
+            <form className="min-w-0 border border-ofora-border bg-white p-5 sm:p-6" onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }}>
               <h2 className="text-3xl font-black tracking-[-0.06em] text-ofora-deep">Submission workspace</h2>
               <p className="mt-3 text-sm text-ofora-muted">Quality score of 75 or higher, delivery within 14 days, and pricing within the locked budget ceiling.</p>
               <div className="mt-8 grid gap-5 sm:grid-cols-2">
                 {["Company information", "Proposed price", "Delivery timeline", "Stock availability", "Quality certification", "Local supplier contribution"].map((label) => (
                   <label key={label} className="grid gap-2 text-sm font-black text-ofora-deep">
                     {label}
-                    <input className="ofora-focus rounded-lg border border-ofora-border px-3 py-3 font-normal" required />
+                    <input className="ofora-focus min-w-0 rounded-lg border border-ofora-border px-3 py-3 font-normal" required />
                   </label>
                 ))}
                 <label className="grid gap-2 text-sm font-black text-ofora-deep sm:col-span-2">
                   Supporting documents placeholder
-                  <input type="file" className="ofora-focus rounded-lg border border-ofora-border px-3 py-3 font-normal" />
+                  <input type="file" className="ofora-focus w-full min-w-0 rounded-lg border border-ofora-border px-3 py-3 font-normal" />
                 </label>
               </div>
               <section className="mt-8 border border-ofora-border bg-ofora-canvas p-5">
