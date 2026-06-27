@@ -38,7 +38,7 @@ export function FairAwardReceiptObject() {
       ref={cardRef}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
-      className="group relative mx-auto aspect-[0.74] w-full max-w-[420px] rotate-[-5deg] rounded-[1.35rem] border border-ofora-deep/10 bg-white p-6 shadow-[0_30px_90px_rgba(6,53,36,0.28)] transition duration-500 [transform:rotate(-5deg)_perspective(900px)_rotateX(var(--receipt-tilt-x,0deg))_rotateY(var(--receipt-tilt-y,0deg))] hover:-translate-y-1 hover:shadow-[0_36px_100px_rgba(6,53,36,0.32)] sm:p-8"
+      className="group relative mx-auto aspect-[0.74] w-full max-w-[250px] rotate-[-5deg] rounded-[1.35rem] border border-ofora-deep/10 bg-white p-5 shadow-[0_30px_90px_rgba(6,53,36,0.28)] transition duration-500 [transform:rotate(-5deg)_perspective(900px)_rotateX(var(--receipt-tilt-x,0deg))_rotateY(var(--receipt-tilt-y,0deg))] hover:-translate-y-1 hover:shadow-[0_36px_100px_rgba(6,53,36,0.32)] min-[360px]:max-w-[300px] min-[390px]:max-w-[340px] min-[380px]:p-6 md:max-w-[420px] sm:p-8"
     >
       <div className="absolute inset-0 rounded-[1.35rem] opacity-[0.08] [background-image:linear-gradient(#063524_1px,transparent_1px),linear-gradient(90deg,#063524_1px,transparent_1px)] [background-size:24px_24px]" />
       <div className="pointer-events-none absolute inset-0 rounded-[1.35rem] opacity-0 transition-opacity duration-300 [background:radial-gradient(circle_at_var(--receipt-light-x,50%)_var(--receipt-light-y,50%),rgba(255,255,255,0.8),transparent_42%)] group-hover:opacity-80" />
