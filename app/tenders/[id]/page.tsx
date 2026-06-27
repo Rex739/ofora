@@ -131,7 +131,7 @@ export default async function TenderDetailPage({
             </RecordPanel>
 
             <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_430px]">
-              <div className="space-y-6">
+              <div className="min-w-0 space-y-6">
                 <AwardPolicyCard policy={tender.policy} />
                 <SupplierSubmissionsTable suppliers={suppliers} submissions={tenderSubmissions} policy={tender.policy} />
                 <RecordPanel className="p-6">
@@ -151,7 +151,7 @@ export default async function TenderDetailPage({
                 </RecordPanel>
                 <TenderTimeline events={tender.auditTimeline} />
               </div>
-              <div id="award-decision" className="space-y-6">
+              <div id="award-decision" className="min-w-0 space-y-6">
                 <AwardDecisionPanel tender={primaryTender} suppliers={suppliers} />
                 <RecordPanel className="p-6">
                   <h2 className="text-xl font-black tracking-[-0.05em] text-ofora-deep">Controlled release status</h2>

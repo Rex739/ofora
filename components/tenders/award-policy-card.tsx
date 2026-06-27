@@ -6,8 +6,8 @@ import { formatCurrency, formatDateTime } from "@/lib/utils";
 export function AwardPolicyCard({ policy }: { policy: AwardPolicy }) {
   return (
     <section className="ofora-panel p-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
           <h2 className="text-2xl font-black tracking-[-0.055em] text-ofora-deep">Award Policy</h2>
           <p className="mt-2 text-sm text-ofora-muted">Evaluation rules cannot be changed after supplier submissions begin.</p>
         </div>
@@ -15,7 +15,7 @@ export function AwardPolicyCard({ policy }: { policy: AwardPolicy }) {
       </div>
       <div className="mt-5 grid gap-3">
         {policy.criteria.map((criterion) => (
-          <div key={criterion.id} className="flex items-center justify-between rounded-md border border-ofora-border bg-ofora-canvas px-3 py-2 text-sm">
+          <div key={criterion.id} className="flex items-center justify-between gap-3 rounded-md border border-ofora-border bg-ofora-canvas px-3 py-2 text-sm">
             <span className="text-ofora-muted">{criterion.label}</span>
             <span className="font-semibold text-ofora-ink">{criterion.weight}%</span>
           </div>
@@ -27,9 +27,9 @@ export function AwardPolicyCard({ policy }: { policy: AwardPolicy }) {
         <div><dt className="text-ofora-muted">Budget ceiling</dt><dd className="font-medium text-ofora-ink">{formatCurrency(policy.budgetCeiling)}</dd></div>
         <div><dt className="text-ofora-muted">Lock timestamp</dt><dd className="font-medium text-ofora-ink">{formatDateTime(policy.lockedAt)}</dd></div>
       </dl>
-      <p className="mt-5 inline-flex items-center gap-2 rounded-md bg-ofora-mist px-3 py-2 text-sm font-medium text-ofora-green">
+      <p className="mt-5 inline-flex max-w-full items-start gap-2 rounded-md bg-ofora-mist px-3 py-2 text-sm font-medium text-ofora-green">
         <LockKeyhole className="h-4 w-4" aria-hidden="true" />
-        Evaluation policy locked before supplier submissions.
+        <span className="min-w-0 break-words">Evaluation policy locked before supplier submissions.</span>
       </p>
     </section>
   );
