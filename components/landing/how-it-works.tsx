@@ -85,7 +85,9 @@ export function HowItWorks() {
             <p className="mt-7 max-w-xl text-xl leading-8 text-ofora-muted">{active[2]}</p>
             <p className="mt-8 max-w-sm text-sm font-black uppercase tracking-[0.18em] text-ofora-green">{active[3]}</p>
           </div>
+
           <StepVisual activeStep={activeStep} />
+          
         </div>
       </div>
       <div className="lg:hidden">
