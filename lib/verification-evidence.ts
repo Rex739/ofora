@@ -10,5 +10,19 @@ export function shortenReference(value: string, lead = 8, tail = 6) {
 }
 
 export function stellarExpertTxUrl(hash: string) {
+  if (!isStellarTransactionHash(hash)) return null;
   return `https://stellar.expert/explorer/testnet/tx/${hash}`;
+}
+
+export function stellarExpertContractUrl(contractId: string) {
+  if (!isStellarContractId(contractId)) return null;
+  return `https://stellar.expert/explorer/testnet/contract/${contractId}`;
+}
+
+export function isStellarTransactionHash(value: string) {
+  return /^[a-f0-9]{64}$/i.test(value);
+}
+
+export function isStellarContractId(value: string) {
+  return /^C[A-Z2-7]{55}$/.test(value);
 }

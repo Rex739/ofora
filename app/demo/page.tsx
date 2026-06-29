@@ -2,10 +2,15 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, RotateCcw, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Copy, ExternalLink, RotateCcw, ShieldCheck } from "lucide-react";
 import { OforaMark } from "@/components/landing/ofora-mark";
 import { shortenReference, stellarExpertTxUrl, testnetEvidence } from "@/lib/verification-evidence";
 import { cn } from "@/lib/utils";
+
+const verificationMode = process.env.NEXT_PUBLIC_OFORA_VERIFICATION_MODE === "real" ? "real" : "mock";
+const realMode = verificationMode === "real";
+const verificationReceiptUrl = stellarExpertTxUrl(testnetEvidence.verificationReceiptTransactionHash);
+const awardRecordUrl = stellarExpertTxUrl(testnetEvidence.registryFinalizationTransactionHash);
 
 const scenes = [
   {
@@ -40,14 +45,21 @@ const scenes = [
   },
   {
     eyebrow: "06 Verify the record on Stellar",
-    title: "The award record is anchored on Stellar testnet.",
-    copy: "The verification receipt was confirmed and consumed once by the Ofora registry.",
-    detail: [
-      `Fair Award Receipt: ${testnetEvidence.fairAwardReceiptId}`,
-      `Verification receipt tx: ${shortenReference(testnetEvidence.verificationReceiptTransactionHash, 10, 8)}`,
-      `Registry finalization tx: ${shortenReference(testnetEvidence.registryFinalizationTransactionHash, 10, 8)}`,
-      `Tender status: ${testnetEvidence.finalTenderStatus}`
-    ]
+    title: realMode ? "The award record is anchored on Stellar testnet." : "The local demo record is complete.",
+    copy: realMode ? "The verification receipt was confirmed and consumed once by the Ofora registry." : "Mock mode keeps the walkthrough local and does not present testnet explorer actions.",
+    detail: realMode
+      ? [
+          `Fair Award Receipt: ${testnetEvidence.fairAwardReceiptId}`,
+          `Verification receipt tx: ${shortenReference(testnetEvidence.verificationReceiptTransactionHash, 10, 8)}`,
+          `Registry finalization tx: ${shortenReference(testnetEvidence.registryFinalizationTransactionHash, 10, 8)}`,
+          `Tender status: ${testnetEvidence.finalTenderStatus}`
+        ]
+      : [
+          `Demo summary: ${testnetEvidence.fairAwardReceiptId}`,
+          "Local validation only",
+          "Explorer links hidden",
+          `Tender status: ${testnetEvidence.finalTenderStatus}`
+        ]
   }
 ];
 
@@ -133,28 +145,69 @@ export default function DemoPage() {
 }
 
 function EvidenceStrip() {
+  const [copied, setCopied] = useState(false);
+  const verificationReference = [
+    `Verifier receipt contract: ${testnetEvidence.verifierReceiptContractId}`,
+    `Registry contract: ${testnetEvidence.registryContractId}`,
+    `Verification receipt transaction: ${testnetEvidence.verificationReceiptTransactionHash}`,
+    `Award record transaction: ${testnetEvidence.registryFinalizationTransactionHash}`,
+    `Fair Award Receipt: ${testnetEvidence.fairAwardReceiptId}`
+  ].join("\n");
+
+  async function copyReference() {
+    await navigator.clipboard.writeText(verificationReference);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  }
+
   return (
     <section className="mt-8 border border-ofora-green/30 bg-ofora-mist p-5">
       <div className="flex items-start gap-3">
         <ShieldCheck className="mt-1 h-5 w-5 text-ofora-green" />
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-ofora-green">VERIFIED ON STELLAR TESTNET</p>
-          <h2 className="mt-2 text-2xl font-black tracking-[-0.055em] text-ofora-deep">Real public evidence</h2>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-ofora-green">{realMode ? "VERIFIED ON STELLAR TESTNET" : "LOCAL DEMO MODE"}</p>
+          <h2 className="mt-2 text-2xl font-black tracking-[-0.055em] text-ofora-deep">{realMode ? "Real public evidence" : "Local demo summary"}</h2>
         </div>
       </div>
-      <div className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
-        <EvidenceLink label="Verification receipt transaction" value={testnetEvidence.verificationReceiptTransactionHash} />
-        <EvidenceLink label="Registry finalization transaction" value={testnetEvidence.registryFinalizationTransactionHash} />
-        <EvidenceText label="Verifier receipt contract" value={testnetEvidence.verifierReceiptContractId} />
-        <EvidenceText label="Registry contract" value={testnetEvidence.registryContractId} />
-      </div>
+      {realMode ? (
+        <>
+          <div className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
+            <EvidenceLink label="Verification receipt transaction" value={testnetEvidence.verificationReceiptTransactionHash} href={verificationReceiptUrl} />
+            <EvidenceLink label="Registry finalization transaction" value={testnetEvidence.registryFinalizationTransactionHash} href={awardRecordUrl} />
+            <EvidenceText label="Verifier receipt contract" value={testnetEvidence.verifierReceiptContractId} />
+            <EvidenceText label="Registry contract" value={testnetEvidence.registryContractId} />
+          </div>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {verificationReceiptUrl ? (
+              <a href={verificationReceiptUrl} target="_blank" rel="noopener noreferrer" className="ofora-focus inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">
+                Open verification receipt <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </a>
+            ) : null}
+            {awardRecordUrl ? (
+              <a href={awardRecordUrl} target="_blank" rel="noopener noreferrer" className="ofora-focus inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">
+                Open award record <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </a>
+            ) : null}
+            <button type="button" onClick={copyReference} className="ofora-focus inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-ofora-deep px-3 py-2.5 text-sm font-black text-white">
+              {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+              {copied ? "Copied" : "Copy verification reference"}
+            </button>
+          </div>
+        </>
+      ) : (
+        <p className="mt-5 border-y border-ofora-border py-4 text-sm font-semibold leading-6 text-ofora-muted">
+          This walkthrough uses local sample data. It does not show testnet transaction actions or placeholder explorer links.
+        </p>
+      )}
     </section>
   );
 }
 
-function EvidenceLink({ label, value }: { label: string; value: string }) {
+function EvidenceLink({ label, value, href }: { label: string; value: string; href: string | null }) {
+  if (!href) return null;
+
   return (
-    <a href={stellarExpertTxUrl(value)} target="_blank" rel="noreferrer" className="ofora-focus border border-ofora-border bg-white p-4">
+    <a href={href} target="_blank" rel="noopener noreferrer" className="ofora-focus border border-ofora-border bg-white p-4">
       <span className="block text-xs font-black uppercase tracking-[0.14em] text-ofora-muted">{label}</span>
       <span className="mt-2 block font-black text-ofora-deep">{shortenReference(value, 10, 8)}</span>
     </a>

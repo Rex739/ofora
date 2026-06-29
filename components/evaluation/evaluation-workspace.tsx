@@ -463,6 +463,8 @@ function FairAwardReceipt({ receipt, onPrepare, verificationMode }: { receipt: N
 
 function RealEvidencePanel() {
   const [copied, setCopied] = useState(false);
+  const verificationReceiptUrl = stellarExpertTxUrl(testnetEvidence.verificationReceiptTransactionHash);
+  const awardRecordUrl = stellarExpertTxUrl(testnetEvidence.registryFinalizationTransactionHash);
   const verificationReference = [
     `Verifier receipt contract: ${testnetEvidence.verifierReceiptContractId}`,
     `Registry contract: ${testnetEvidence.registryContractId}`,
@@ -495,8 +497,8 @@ function RealEvidencePanel() {
       </dl>
       <p className="mt-4 border-t border-ofora-border pt-4 text-sm font-semibold text-ofora-muted">Payment execution is not included in this hackathon MVP.</p>
       <div className="mt-5 grid gap-2">
-        <a href={stellarExpertTxUrl(testnetEvidence.verificationReceiptTransactionHash)} target="_blank" rel="noreferrer" className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">View verification receipt <ExternalLink className="h-4 w-4" /></a>
-        <a href={stellarExpertTxUrl(testnetEvidence.registryFinalizationTransactionHash)} target="_blank" rel="noreferrer" className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">View award record <ExternalLink className="h-4 w-4" /></a>
+        {verificationReceiptUrl ? <a href={verificationReceiptUrl} target="_blank" rel="noopener noreferrer" className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">View verification receipt <ExternalLink className="h-4 w-4" /></a> : null}
+        {awardRecordUrl ? <a href={awardRecordUrl} target="_blank" rel="noopener noreferrer" className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg border border-ofora-border bg-white px-3 py-2.5 text-sm font-black text-ofora-deep">View award record <ExternalLink className="h-4 w-4" /></a> : null}
         <button type="button" onClick={copyReference} className="ofora-focus inline-flex items-center justify-center gap-2 rounded-lg bg-ofora-deep px-3 py-2.5 text-sm font-black text-white"><Copy className="h-4 w-4" />{copied ? "Copied" : "Copy verification reference"}</button>
       </div>
       <Dialog.Root>
