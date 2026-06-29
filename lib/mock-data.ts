@@ -204,10 +204,10 @@ export const auditRecords: AuditRecord[] = [
         description: "Award integrity confirmed and Fair Award Receipt generated."
       },
       {
-        id: "tl-payment",
-        label: "Payment authorized",
+        id: "tl-award-finalized",
+        label: "Award record finalized",
         timestamp: "2026-06-25T08:43:00.000Z",
-        description: "Payment status moved to ready for controlled release."
+        description: "The validated award record is ready for a future controlled-release workflow. Payment execution is not included in this hackathon MVP."
       }
     ]
   },
