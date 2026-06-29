@@ -31,7 +31,7 @@ export function SupplierSubmissionsTable({
         <table className="w-full min-w-[860px] text-left text-sm">
           <thead className="border-b border-ofora-border bg-ofora-soft text-xs uppercase tracking-[0.12em] text-ofora-muted">
             <tr>
-              <th className="px-5 py-3">Supplier alias</th>
+              <th className="px-5 py-3">Supplier</th>
               <th className="px-5 py-3">Submission status</th>
               <th className="px-5 py-3">Eligibility</th>
               <th className="px-5 py-3">Submission timestamp</th>
@@ -45,7 +45,7 @@ export function SupplierSubmissionsTable({
               const result = results.find((item) => item.supplierId === submission.supplierId);
               return (
                 <tr key={submission.id}>
-                  <td className="px-5 py-5 font-black text-ofora-deep">{supplier?.alias}</td>
+                  <td className="px-5 py-5 font-black text-ofora-deep">{supplier?.name}</td>
                   <td className="px-5 py-4 text-ofora-muted">{submission.status}</td>
                   <td className="px-5 py-4"><StatusBadge status={result?.eligible ? "Eligible" : "Ineligible"} /></td>
                   <td className="px-5 py-4 text-ofora-muted">{formatDateTime(submission.submittedAt)}</td>

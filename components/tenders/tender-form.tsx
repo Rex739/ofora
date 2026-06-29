@@ -261,9 +261,9 @@ export function TenderForm() {
                   </button>
                   {exampleOpen ? (
                     <p className="mt-4 text-sm leading-7 text-ofora-muted">
-                      Supplier A offers the lowest price but cannot deliver for 18 days. Supplier B costs slightly more but can deliver in 7 days and meets all quality requirements.
+                      Meridian Industrial Ltd. offers the lowest price but cannot deliver for 18 days. Nova Relief Systems costs slightly more but can deliver in 7 days and meets all quality requirements.
                       <br /><br />
-                      Because Supplier A misses your 14-day delivery requirement, Ofora will not consider them. Supplier B may be selected if they achieve the highest score among the eligible suppliers.
+                      Because Meridian Industrial Ltd. misses your 14-day delivery requirement, Ofora will not consider them. Nova Relief Systems may be selected if they achieve the highest score among the eligible suppliers.
                     </p>
                   ) : null}
                 </section>

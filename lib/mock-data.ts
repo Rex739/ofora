@@ -10,9 +10,9 @@ import {
 } from "@/lib/types";
 
 export const suppliers: Supplier[] = [
-  { id: "sup-atlas", name: "Atlas Supply Group", alias: "Supplier A", country: "United Kingdom" },
-  { id: "sup-nova", name: "Nova Relief Systems", alias: "Supplier B", country: "Singapore" },
-  { id: "sup-meridian", name: "Meridian Industrial Ltd.", alias: "Supplier C", country: "Kenya" }
+  { id: "sup-atlas", name: "Atlas Supply Group", country: "United Kingdom" },
+  { id: "sup-nova", name: "Nova Relief Systems", country: "Singapore" },
+  { id: "sup-meridian", name: "Meridian Industrial Ltd.", country: "Kenya" }
 ];
 
 export const primaryTender: Tender = {

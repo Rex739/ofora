@@ -141,7 +141,7 @@ export default async function TenderDetailPage({
                       const supplier = suppliers.find((item) => item.id === result.supplierId);
                       return (
                         <div key={result.supplierId} className="grid gap-3 border-b border-ofora-border py-4 text-sm sm:grid-cols-[1fr_auto_auto] sm:items-center">
-                          <span className="font-black text-ofora-deep">{supplier?.alias}</span>
+                          <span className="font-black text-ofora-deep">{supplier?.name}</span>
                           <span className="text-ofora-muted">{result.eligible ? "Eligible under locked policy" : "Not eligible"}</span>
                           <span className="font-black text-ofora-green">{result.eligible ? `${result.totalScore?.toFixed(1)} policy score` : "Not applicable"}</span>
                         </div>

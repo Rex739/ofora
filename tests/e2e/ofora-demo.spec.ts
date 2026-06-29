@@ -57,6 +57,18 @@ test("evaluation handles Meridian, Atlas, and Nova in mock mode", async ({ page 
   await expect(page.getByRole("heading", { name: /Demo Award Summary|Fair Award Receipt/ })).toBeVisible();
 });
 
+test("internal evaluation view uses canonical supplier names", async ({ page }) => {
+  await page.goto("/tenders/OFR-2026-041?evaluation=1");
+
+  for (const supplier of ["Atlas Supply Group", "Nova Relief Systems", "Meridian Industrial Ltd."]) {
+    await expect(page.getByText(supplier).first()).toBeVisible();
+  }
+
+  for (const alias of ["Supplier A", "Supplier B", "Supplier C"]) {
+    await expect(page.getByText(alias, { exact: true })).toHaveCount(0);
+  }
+});
+
 test("real evidence mode shows canonical safe evidence", async ({ page }) => {
   test.skip(process.env.NEXT_PUBLIC_OFORA_VERIFICATION_MODE !== "real", "Run with NEXT_PUBLIC_OFORA_VERIFICATION_MODE=real.");
   await page.addInitScript(() => {

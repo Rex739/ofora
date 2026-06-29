@@ -58,7 +58,6 @@ export type AwardPolicy = {
 export type Supplier = {
   id: string;
   name: string;
-  alias: string;
   country: string;
 };
 
